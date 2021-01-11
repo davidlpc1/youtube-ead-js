@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="/layout.css">
+        <link rel="stylesheet" href="{% block css %}{% endblock %}">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    </head>
+    <body> 
+        <nav>
+            <div class="left">
+                <a href="/">
+                    <img class="logo" src="/img/logo.png" alt="Youtube EAD">
+                </a>
+                <a href="#">Explore <div class="underline"></div></a>
+                <a href="#">Create Category <div class="underline"></div></a>
+                <a href="#">Create Video <div class="underline"></div></a>
+                <a href="#">Create Playlist <div class="underline"></div></a>
+            </div>
+            <div class="right">
+                <a href="#">Log Out <div class="underline"></div></a>
+                <a href="#">Change Password <div class="underline"></div></a>
+                <a href="#">Perfil <div class="underline"></div></a>
+            </div>
+        </nav>
+        {% block content %}{% endblock %}
+       
+        <script src="/scripts.js"></script>
+    </body>
+</html>

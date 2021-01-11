@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block css %}login.css{% endblock %}
+
+{% block content %}
+<div class="centralize">
+    <main class="container">
+        <h2>Login</h2>
+    
+        <form action="">
+            <div class="input-field">
+                <input type="text" name="username" id="username" placeholder="Enter your Username">
+                <div class="underline"></div>
+            </div>
+    
+            <div class="input-field">
+                <input type="password" name="password" id="password" placeholder="Enter your Password">
+                <div class="underline"></div>
+            </div>
+    
+            <input type="submit" value="Continue">
+        </form>
+    
+        <div class="footer">
+            <span>Or Connect With Social Media</span>
+            <div class="social-fields">
+                <div class="social-field twitter">
+                    <a href="#">
+                        <i class="fab fa-twitter"></i>
+                        Sign in with Twitter
+                    </a>
+                </div>
+                <div class="social-field facebook">
+                    <a href="#">
+                        <i class="fab fa-facebook"></i>
+                        Sign in with Facebook
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>    
+</div>
+
+<ul class="squares">
+</ul>
+
+{% endblock %}
