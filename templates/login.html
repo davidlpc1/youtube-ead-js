@@ -9,7 +9,7 @@
     <main class="container">
         <h2>Login</h2>
     
-        <form action="">
+        <form action="/login" method="post">
             <div class="input-field">
                 <input type="text" name="username" id="username" placeholder="Enter your Username">
                 <div class="underline"></div>
@@ -26,19 +26,12 @@
         <div class="footer">
             <span>Or Connect With Social Media</span>
             <div class="social-fields">
-                <div class="social-field twitter">
-                    <a href="#">
-                        <i class="fab fa-twitter"></i>
-                        Sign in with Twitter
-                    </a>
-                </div>
-                <div class="social-field facebook">
-                    <a href="#">
-                        <i class="fab fa-facebook"></i>
-                        Sign in with Facebook
-                    </a>
-                </div>
+                <fb:login-button 
+                    scope="public_profile,email"
+                    onlogin="checkLoginState();">
+                </fb:login-button>
             </div>
+            <span class="facebook_status"></span>
         </div>
     </main>    
 </div>
@@ -46,4 +39,28 @@
 <ul class="squares">
 </ul>
 
+<script>
+    const form = document.querySelector('form')
+    form.addEventListener('submit',event => {
+        if(document.querySelector(`input['name="username"']`).value.trim().length <= 0) alert('Username is required')
+        if(document.querySelector(`input['name="password"']`).value.trim().length <= 0) alert('Paswword is required')
+    })
+    function checkLoginState() {
+        FB.getLoginStatus(response => {    
+            if (response.status === 'connected') {   
+                fetch(location.href,{  
+                    method:'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json'
+                    },
+                    body:JSON.stringify( response.authResponse )
+                })
+            } else {                                
+                document.getElementById('facebook_status').innerHTML = 'Please log into this webpage.';
+            }
+
+        });
+    }
+</script>
 {% endblock %}

@@ -40,21 +40,33 @@ nunjucks.configure("templates", {
   noCache: true, //Retirar na produção
 })
 
-const userIsLogged = (req,res,next,callback) =>{ 
-  if(!req.session.userId) res.redirect('/login')
-  else{
-    callback(req, res, next)
-  }
+const routeWhereLoginIsRequired = (method,routePath,callback) => { 
+  app[method](routePath,(req,res,next) => {
+    if(!req.session.userId) res.redirect('/login')
+    else{
+      callback(req, res, next)
+    }
+  })
 }
 
-app.get('/', (req, res, next) => {
-  userIsLogged(req,res,next,(req, res, next) => {
-    res.render("index.html", { notes: rows });
-  })
-})
+routeWhereLoginIsRequired('get','/',(req, res, next) => 
+  res.render("index.html")
+)
 
 app.get('/login', (req, res, next) => {
   res.render("login.html");
+})
+
+app.post('/login', (req, res, next) => {
+  const { username , password ,accessToken ,userID } = req.body
+  if(accessToken === null || accessToken === undefined){
+    console.log('Do Login with username and password')
+    console.log(username,password)
+  }else{
+    console.log('Do Login with facebook id')
+    console.log(accessToken,userID)
+  }
+  
 })
 
 app.listen(PORT, () => {
