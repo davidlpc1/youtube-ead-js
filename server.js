@@ -138,6 +138,11 @@ routeWhereLoginIsRequired('post','/update_perfil',async (req, res, next) => {
   res.redirect("/update_perfil")
 })
 
+routeWhereLoginIsRequired('get','/logout',async (req, res, next) => {
+  req.session.userID = null
+  res.redirect('/login')
+})
+
 app.listen(PORT, () => {
   console.log(`> Listening at http:localhost:${PORT}`)
 })
