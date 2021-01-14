@@ -17,8 +17,24 @@ if (!databaseAlreadyExists) {
 db.findUserByName = (username) => {
     return new Promise((resolve,reject) => {
         db.all(`SELECT * FROM USERS WHERE username = ?`,[username],(error,rows) => {
-            if(error) reject(error)
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
     
+            resolve(rows)
+        })
+    })
+}
+
+db.findById = (id) => {
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM USERS WHERE id = ?`,[id],(error,rows) => {
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
+
             resolve(rows)
         })
     })
