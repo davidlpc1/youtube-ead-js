@@ -69,7 +69,6 @@ app.post('/login', async(req, res, next) => {
       if(user.length > 0){
         const userIDOfLoginFunction = await db.loginUser(username,password)
         req.session.userID = userIDOfLoginFunction
-        res.redirect('/')
       }else{
         throw new Error('User not found')
       }
@@ -83,7 +82,6 @@ app.post('/login', async(req, res, next) => {
         const userIDOfLoginFunction = await db.loginUser(name,accessToken)
         req.session.userID = userIDOfLoginFunction
         req.session.accessToken = accessToken
-        res.redirect('/')
       }else{
         throw new Error('User not found')
       }
@@ -91,6 +89,9 @@ app.post('/login', async(req, res, next) => {
       res.render("login.html",{ error:err.message });
     }
   }
+
+  
+  return res.redirect('/')
 })
 
 app.get('/register', (req, res, next) => {
@@ -124,7 +125,7 @@ app.post('/register', async(req, res, next) => {
     }
   }
 
-  res.redirect('/')
+  return res.redirect('/')
 })
 
 routeWhereLoginIsRequired('get','/update_perfil',async (req, res, next) => {
@@ -163,11 +164,10 @@ routeWhereLoginIsRequired('post','/change_password',async (req, res, next) => {
 
   try{
     await db.changePassword(req.session.userID,old_password,new_password)
-    return res.redirect('/')
+    res.redirect('/')
   }catch(err){
     return res.render('change_password.html',{ error:err.message })
   }
-
 })
 
 app.listen(PORT, () => {

@@ -149,6 +149,8 @@ db.changePassword = (id,old_password,new_password) => {
                 reject(error)
                 throw new Error(error)
             }
+
+            resolve('Sucess')
         })
     })
 }
