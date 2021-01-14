@@ -54,3 +54,15 @@ nav a .underline::after {
 nav a:hover .underline::after {
     transform: scaleX(1);
 }
+
+nav a #perfil_image{
+    max-width:40px;
+    border-radius:20px;
+    border: .3px solid #111;
+    transition: all 300ms ease-in-out;
+}
+
+nav a #perfil_image:hover{
+    transform:translateY(-.3rem);
+    border: .3px solid #e5e5e5;
+}

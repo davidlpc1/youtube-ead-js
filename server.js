@@ -50,8 +50,9 @@ const routeWhereLoginIsRequired = (method,routePath,callback) => {
   })
 }
 
-routeWhereLoginIsRequired('get','/',(req, res, next) => {
-  res.render("index.html",{ loged:true })
+routeWhereLoginIsRequired('get','/',async (req, res, next) => {
+  const { image } = (await db.findById(req.session.userID))[0]
+  res.render("index.html",{ loged:true,image })
 })
 
 app.get('/login', (req, res, next) => {
@@ -123,6 +124,18 @@ app.post('/register', async(req, res, next) => {
   }
 
   res.redirect('/')
+})
+
+routeWhereLoginIsRequired('get','/update_perfil',async (req, res, next) => {
+  const { image,about,username ,level } = (await db.findById(req.session.userID))[0]
+  res.render("update_perfil.html",{ loged:true,image,username,level,about:about.trim() })
+})
+
+
+routeWhereLoginIsRequired('post','/update_perfil',async (req, res, next) => {
+  const { username , about ,image } = req.body
+  db.updateUser(req.session.userID,username,image,about)
+  res.redirect("/update_perfil")
 })
 
 app.listen(PORT, () => {

@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block css %}login.css{% endblock %}
+
+{% block content %}
+    <style>
+        main.container {
+            padding: 1.3rem !important;
+            text-align:center !important;
+        }
+
+        main h2 {
+            margin-bottom: 1.4rem !important;
+        }
+
+        main h2::before {
+            left: 50% !important;
+        }
+
+        .perfil_image{
+            max-width:180px;
+            border-radius:90px;
+        }
+    </style>
+    <div class="centralize">
+        <main class="container">
+            <img class="perfil_image" src="{{ image }}" alt="{{ username }}" >
+            <h2>{{ username }}</h2>
+        
+            <form action="/update_perfil" method="post">
+                <div class="input-field">
+                    <input type="text" name="username" id="username" placeholder="Enter your Username" required value="{{ username }}">
+                    <div class="underline"></div>
+                </div>
+
+                <div class="input-field">
+                    <input name="image" placeholder="Link of image" type="url" value="{{ image }}">
+                    <div class="underline"></div>
+                </div>
+
+                <div class="input-field">
+                    <textarea name="about" placeholder="Description" type="text" maxlength="255" >{{ about }}</textarea> 
+                    <div class="underline"></div>
+                </div>
+
+                <input type="submit" value="Continue">
+            </form>
+        </main>  
+
+    </div>
+
+    <ul class="squares">
+    </ul>
+{% endblock %}
