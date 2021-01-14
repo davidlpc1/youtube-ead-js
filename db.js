@@ -102,6 +102,17 @@ db.loginUser = (username,password) => {
     })
 }
 
+db.updateUser = (id,username,image,about) => {
+    return new Promise(async(resolve, reject) => {
+        db.run(`UPDATE users  
+            SET username= ? ,image= ? , about= ? 
+            WHERE id = ?;
+        `,[username,image,about,id],(error) => {
+            if(error) reject(error)
+        })
+    })
+}
+
 const debuging = false
 if(debuging){
     db.deleteAllUsers().then(() => {})
