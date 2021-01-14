@@ -51,7 +51,7 @@ const routeWhereLoginIsRequired = (method,routePath,callback) => {
 }
 
 routeWhereLoginIsRequired('get','/',(req, res, next) => {
-  res.render("index.html")
+  res.render("index.html",{ loged:true })
 })
 
 app.get('/login', (req, res, next) => {
