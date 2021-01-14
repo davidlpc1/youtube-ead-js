@@ -39,6 +39,7 @@
         </nav>
         {% block content %}{% endblock %}
        
+        <div id="fb-root"></div>
         <script>
             window.fbAsyncInit = function() {
               FB.init({
@@ -49,6 +50,7 @@
               });
             };
         </script>
+        <script async defer crossorigin="anonymous" src="https://connect.facebook.net/pt_BR/sdk.js#xfbml=1&version=v9.0&appId=430296648120551&autoLogAppEvents=1" nonce="xQ6Afjdv"></script>
         <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>   
         <script src="/scripts.js"></script>
     </body>
