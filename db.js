@@ -95,10 +95,19 @@ db.loginUser = (username,password) => {
             throw new Error('User not found')
         }
         const { id,hash } = user[0]
+        const passwordIsCorrect = await db.testPassword
+        if(!passwordIsCorrect) {
+            reject('Your password is incorrect')
+            throw new Error('Your password is incorrect')
+        }
+        
         bcrypt.compare(password, hash, (err, result) => {
-            if(err) reject(err)
+            if(err) {
+                reject(err)
+                throw new Error(err.message)
+            }
             if(result) resolve(id)
-        });
+        })
     })
 }
 
@@ -112,6 +121,38 @@ db.updateUser = (id,username,image,about) => {
         })
     })
 }
+
+db.testPassword = (id,password) => {
+    return new Promise(async(resolve,reject) => {
+        const { hash } = (await db.findById(id))[0]
+        resolve(bcrypt.compareSync(password, hash))
+    })
+}
+
+db.changePassword = (id,old_password,new_password) => {
+    return new Promise(async(resolve,reject) => {
+        const { hash } = (await db.findById(id))[0]
+        if(!bcrypt.compareSync(old_password, hash)) {
+            reject('Your password is incorrect')
+            throw new Error('Your password is incorrect')
+        }
+
+        const saltRounds = 10
+        const salt = bcrypt.genSaltSync(saltRounds)
+        const newHash = bcrypt.hashSync(new_password, salt)
+
+        db.run(`UPDATE users  
+            SET hash= ? 
+            WHERE id = ?;
+        `,[newHash,id],(error) => {
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
+        })
+    })
+}
+
 
 const debuging = false
 if(debuging){

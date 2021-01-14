@@ -45,6 +45,7 @@ const routeWhereLoginIsRequired = (method,routePath,callback) => {
     console.log(`Your id is: ${req.session.userID}`)
     if(!req.session.userID) res.redirect('/login')
     else{
+      res.setHeader("Content-Type", "text/html")
       callback(req, res, next)
     }
   })
@@ -141,6 +142,32 @@ routeWhereLoginIsRequired('post','/update_perfil',async (req, res, next) => {
 routeWhereLoginIsRequired('get','/logout',async (req, res, next) => {
   req.session.userID = null
   res.redirect('/login')
+})
+
+routeWhereLoginIsRequired('get','/change_password',async (req, res, next) => {
+  res.render('change_password.html')
+})
+
+routeWhereLoginIsRequired('post','/change_password',async (req, res, next) => {
+  const { old_password,new_password,new_password_again } = req.body;
+  if(new_password.trim() !== new_password_again.trim()){
+    return res.render('change_password.html',{ error:"Passwords must be equal" })
+  } 
+  if(old_password.trim() === new_password.trim()){
+    return res.render('change_password.html',{ error:"Your old password cannot be equal to the new" })
+  }
+  const theOldPasswordIsValid = await db.testPassword(req.session.userID,old_password)
+  if(!theOldPasswordIsValid){
+    return res.render('change_password.html',{ error:"Your old password is wrong!" })
+  }
+
+  try{
+    await db.changePassword(req.session.userID,old_password,new_password)
+    return res.redirect('/')
+  }catch(err){
+    return res.render('change_password.html',{ error:err.message })
+  }
+
 })
 
 app.listen(PORT, () => {
