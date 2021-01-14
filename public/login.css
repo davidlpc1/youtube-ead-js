@@ -56,6 +56,7 @@ main.container {
     border-radius: 8px;
     animation: fall 800ms;
     z-index:9999;
+    margin-bottom:2rem;
 }
 
 @media (min-width:768px){
@@ -92,7 +93,7 @@ form {
     position: relative;
 }
 
-form .input-field:first-child {
+form .input-field:not(:last-child) {
     margin-bottom: 1.5rem;
 }
 
@@ -117,14 +118,16 @@ form .input-field:first-child {
     transform-origin: left;
 }
 
-.input-field input:focus ~ .underline::after {
+.input-field input:focus ~ .underline::after ,
+.input-field textarea:focus ~ .underline::after {
     transform: scaleX(1);
 }
 
-.input-field input {
+.input-field input,.input-field textarea {
     outline: none;
     font-size: 0.9rem;
     color: rgba(0, 0, 0, 0.7);
+    width:100%;
 }
 
 .input-field input::placeholder {

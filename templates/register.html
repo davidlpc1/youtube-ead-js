@@ -1,47 +1,64 @@
 {% extends "layout.html" %}
 
-{% block title %}Login{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block css %}login.css{% endblock %}
 
 {% block content %}
 <div class="centralize">
     <main class="container">
-        <h2>Login</h2>
+        <h2>Register</h2>
     
-        <form action="/login" method="post">
+        <form action="/register" method="post">
             <div class="input-field">
                 <input type="text" name="username" id="username" placeholder="Enter your Username" required>
                 <div class="underline"></div>
             </div>
     
-            <div class="input-field">
+            <div class="input-field" >
                 <input type="password" name="password" id="password" placeholder="Enter your Password" required>
                 <div class="underline"></div>
             </div>
     
+            <div class="input-field" >
+                <input type="password" name="passwordAgain" id="passwordAgain" placeholder="Enter again your Password" required>
+                <div class="underline"></div>
+            </div>
+
+            <div class="input-field">
+                <input name="image" placeholder="Link of image" type="url">
+                <div class="underline"></div>
+            </div>
+
+            <div class="input-field">
+                <textarea name="about" placeholder="Description" type="text" maxlength="255" ></textarea> 
+                <div class="underline"></div>
+            </div>
+
             <input type="submit" value="Continue">
         </form>
     
         <div class="footer">
             <span>Or Connect With Social Media</span>
-            <div class="social-fields">
-                <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"onlogin="checkLoginState();"></div>
-            </div>
-            <span class="facebook_status"></span>
 
+            <div class="social-fields">
+                <div class="fb-login-button" data-width="200" data-size="medium" data-button-type="continue_with" data-layout="default" data-auto-logout-link="false" data-use-continue-as="true"onlogin="checkRegisterState();"></div>
+            </div>
+
+            <span class="facebook_status"></span>
             {% if error %}
                 <span style="font-weight: 600; font-size:20px;margin-top:2px;">{{ error }}</span>
             {% endif %}
         </div>
-    </main>    
+    </main>  
+
 </div>
 
 <ul class="squares">
 </ul>
 
 <script>
-    function checkLoginState() {
+    function checkRegisterState() {
         FB.getLoginStatus(async responseOfLogin => {    
             if (responseOfLogin.status === 'connected') {   
                 await FB.api('/me',async response => {
