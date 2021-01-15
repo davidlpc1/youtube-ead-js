@@ -62,6 +62,7 @@ git clone https://github.com/davidlpc1/youtube-ead-js
 ### Features
 
 - [x] Register user
+- [x] Login User
 - [ ] Register video
 - [ ] Register playlist
 - [ ] View user
@@ -71,9 +72,9 @@ git clone https://github.com/davidlpc1/youtube-ead-js
 - [ ] Dislike a video
 - [ ] Show how many likes a video has
 - [ ] Show how many dislikes a video has
-- [ ] Update password of user 
-- [ ] Update name of user 
-- [ ] Update image of user 
+- [x] Update password of user 
+- [x] Update name of user 
+- [x] Update image of user 
 - [ ] Update Level of user
 - [ ] Update playlist
 - [ ] All actions of user in index page
