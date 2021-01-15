@@ -1,7 +1,15 @@
 {% extends "layout.html" %}
 
 {% block title %}Activity{% endblock %}
+{%  block css %}index.css{% endblock %}
 
 {% block content %}
-
+    <section id="categories">
+        {% for category in categoriesCreatedByUser %}
+            <div class="card">
+                {{ category.name }}
+            </div>
+        {% endfor %}
+    </section>
+    
 {% endblock %}

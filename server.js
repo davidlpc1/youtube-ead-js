@@ -53,7 +53,8 @@ const routeWhereLoginIsRequired = (method,routePath,callback) => {
 
 routeWhereLoginIsRequired('get','/',async (req, res, next) => {
   const { image } = (await db.findById(req.session.userID))[0]
-  res.render("index.html",{ loged:true,image })
+  const categoriesCreatedByUser = await db.findCategoriesByUserId(req.session.userID)
+  res.render("index.html",{ loged:true,image,categoriesCreatedByUser })
 })
 
 app.get('/login', (req, res, next) => {
