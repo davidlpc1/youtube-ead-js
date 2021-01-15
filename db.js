@@ -165,6 +165,16 @@ db.findCategoryByName = (name) => {
     })
 }
 
+db.findCategoriesByUserId = (userID) => {
+    return new Promise(async(resolve,reject) => {
+        db.all(`SELECT * FROM categories WHERE user_id = ?`,[userID],(error,rows) => {
+            if(error) reject(error)
+            
+            resolve(rows)
+        })
+    })
+}
+
 db.createCategory = (userID,name) => {
     return new Promise((resolve,reject) => {
         db.run("INSERT INTO categories (user_id,name) VALUES(?,?) ",

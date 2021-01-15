@@ -1,0 +1,19 @@
+section#categories{
+    margin:1.4rem;
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:3rem;
+}
+
+.card{
+    background:whitesmoke;
+}
+
+section#categories .card{
+    padding:2rem;
+    max-width:150px;
+    max-height:150px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
