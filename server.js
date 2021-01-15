@@ -73,20 +73,20 @@ app.post('/login', async(req, res, next) => {
         throw new Error('User not found')
       }
     }catch(err){
-      res.render("login.html",{ error:err.message });
+      return res.render("login.html",{ error:err.message });
     }
   }else{
     try{
       const user = await db.findUserByName(name)
       if(user.length > 0){
-        const userIDOfLoginFunction = await db.loginUser(name,accessToken)
+        const userIDOfLoginFunction = await db.loginUser(name,userID)
         req.session.userID = userIDOfLoginFunction
         req.session.accessToken = accessToken
       }else{
         throw new Error('User not found')
       }
     }catch(err){
-      res.render("login.html",{ error:err.message });
+      return res.render("login.html",{ error:err.message });
     }
   }
 
@@ -111,17 +111,17 @@ app.post('/register', async(req, res, next) => {
       const myUser = await db.findUserByName(username)
       req.session.userID = myUser[0].id
     }catch(err){
-      res.render("register.html",{ error:err.message });
+      return res.render("register.html",{ error:err.message });
     }
   
   }else{
     try{
-      await db.addUser(name,accessToken,`https://graph.facebook.com/${userID}/picture`,'')
+      await db.addUser(name,userID,`https://graph.facebook.com/${userID}/picture`,'')
       const myUser = await db.findUserByName(name)
       req.session.accessToken = accessToken
       req.session.userID = myUser[0].id
     }catch(err){
-      res.render("register.html",{ error:err.message });
+      return res.render("register.html",{ error:err.message });
     }
   }
 
