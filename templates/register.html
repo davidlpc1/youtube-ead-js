@@ -59,12 +59,12 @@
 
 <script>
     function checkRegisterState() {
-        FB.getLoginStatus(async responseOfLogin => {    
+        FB.getLoginStatus(responseOfLogin => {    
             if (responseOfLogin.status === 'connected') {   
-                await FB.api('/me',async response => {
+                FB.api('/me',response => {
                     responseOfLogin.authResponse.name = response.name
                                         
-                    await fetch(location.href,{  
+                    fetch(location.href,{  
                         method:'POST',
                         headers: {
                             'Accept': 'application/json, text/plain, */*',
