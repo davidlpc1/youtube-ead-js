@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Create category{% endblock %}
+{% block css %}login.css{% endblock %}
+
+{% block content %}
+    <div class="centralize">
+        <main class="container">
+            <h2>Create category</h2>
+        
+            <form action="/create_category" method="post">
+                <div class="input-field">
+                    <input autocomplete="off" autofocus class="form-control" name="name" placeholder="Name of category" type="text" required>
+                    <div class="underline"></div>
+                </div>
+
+                {% if error %}
+                    <span style="font-weight: 600; font-size:20px;margin-top:2px;">{{ error }}</span>
+                {% endif %}
+
+                <input type="submit" value="Continue">
+            </form>
+        </main>  
+
+    </div>
+
+    <ul class="squares">
+    </ul>
+{% endblock %}

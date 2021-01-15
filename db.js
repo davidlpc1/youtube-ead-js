@@ -155,6 +155,29 @@ db.changePassword = (id,old_password,new_password) => {
     })
 }
 
+db.findCategoryByName = (name) => {
+    return new Promise(async(resolve,reject) => {
+        db.all(`SELECT * FROM categories WHERE name = ?`,[name],(error,rows) => {
+            if(error) reject(error)
+            
+            resolve(rows)
+        })
+    })
+}
+
+db.createCategory = (userID,name) => {
+    return new Promise((resolve,reject) => {
+        db.run("INSERT INTO categories (user_id,name) VALUES(?,?) ",
+        [userID,name],(error) => {
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
+
+            resolve('Sucess')
+        })      
+    })
+}
 
 const debuging = false
 if(debuging){

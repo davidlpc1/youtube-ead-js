@@ -137,7 +137,7 @@ routeWhereLoginIsRequired('get','/update_perfil',async (req, res, next) => {
 routeWhereLoginIsRequired('post','/update_perfil',async (req, res, next) => {
   const { username , about ,image } = req.body
   db.updateUser(req.session.userID,username,image,about)
-  res.redirect("/update_perfil")
+  res.redirect("/update_perfil",{ loged:true,image })
 })
 
 routeWhereLoginIsRequired('get','/logout',async (req, res, next) => {
@@ -146,28 +146,51 @@ routeWhereLoginIsRequired('get','/logout',async (req, res, next) => {
 })
 
 routeWhereLoginIsRequired('get','/change_password',async (req, res, next) => {
-  res.render('change_password.html')
+  const { image } = (await db.findById(req.session.userID))[0]
+  return res.render('change_password.html',{ loged:true,image })
 })
 
 routeWhereLoginIsRequired('post','/change_password',async (req, res, next) => {
   const { old_password,new_password,new_password_again } = req.body;
+  const { image } = (await db.findById(req.session.userID))[0]
   if(new_password.trim() !== new_password_again.trim()){
-    return res.render('change_password.html',{ error:"Passwords must be equal" })
+    return res.render('change_password.html',{ error:"Passwords must be equal" ,loged:true,image})
   } 
   if(old_password.trim() === new_password.trim()){
-    return res.render('change_password.html',{ error:"Your old password cannot be equal to the new" })
+    return res.render('change_password.html',{ error:"Your old password cannot be equal to the new",loged:true,image})
   }
   const theOldPasswordIsValid = await db.testPassword(req.session.userID,old_password)
   if(!theOldPasswordIsValid){
-    return res.render('change_password.html',{ error:"Your old password is wrong!" })
+    return res.render('change_password.html',{ error:"Your old password is wrong!" ,loged:true,image})
   }
 
   try{
     await db.changePassword(req.session.userID,old_password,new_password)
     res.redirect('/')
   }catch(err){
-    return res.render('change_password.html',{ error:err.message })
+    return res.render('change_password.html',{ error:err.message ,loged:true,image})
   }
+})
+
+routeWhereLoginIsRequired('get','/create_category',async (req, res, next) => {
+  const { image } = (await db.findById(req.session.userID))[0]
+  return res.render('create_category.html',{ loged:true,image })
+})
+
+routeWhereLoginIsRequired('post','/create_category',async (req, res,next) => {
+  const { image } = (await db.findById(req.session.userID))[0]
+
+  try{
+    const { name } = req.body
+    const categoryAlreadyExists = await db.findCategoryByName(name)
+    if(categoryAlreadyExists.length >= 1) return res.render('create_category.html',{ error:"That category already exists" ,logged:true,image})
+
+    await db.createCategory(req.session.userID,name)
+    return res.redirect('/')
+  }catch(err){
+    return res.render('create_category.html',{ error:err.message ,logged:true,image})
+  }
+
 })
 
 app.listen(PORT, () => {
