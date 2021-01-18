@@ -66,7 +66,7 @@ git clone https://github.com/davidlpc1/youtube-ead-js
 - [ ] Register video
 - [ ] Register playlist
 - [x] Register Category
-- [ ] View user
+- [x] View user
 - [ ] View video
 - [ ] View playlist
 - [ ] Like a video
