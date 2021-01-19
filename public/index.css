@@ -16,4 +16,40 @@ section#categories .card{
     display:flex;
     justify-content: center;
     align-items: center;
+    position:relative
+}
+
+.title_in_feed{
+    margin:1rem;
+    font-weight:500;
+    color:#f5f5f5;
+}
+
+.card--menu{
+    display:none;
+}
+
+.card--menu.active{
+    padding:15px;
+    display:flex;
+    flex-direction:column;
+
+    position: absolute;
+
+    color:#000 !important;
+    background:#d22b3c
+}
+
+.icon--trash{
+    cursor:pointer;
+    color:#fff;
+    transition: 210ms ease-in-out;
+}
+
+.icon--trash:hover{
+    transform:translateY(-2px);
+}
+
+.card--menu button {
+    background:none;
 }

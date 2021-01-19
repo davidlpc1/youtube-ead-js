@@ -53,7 +53,7 @@ const routeWhereLoginIsRequired = (method,routePath,callback) => {
 }
 
 routeWhereLoginIsRequired('get','/',async (req, res, next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   const categoriesCreatedByUser = await db.findCategoriesByUserId(req.session.userID)
   res.render("index.html",{ loged:true,image,categoriesCreatedByUser })
 })
@@ -131,7 +131,7 @@ app.post('/register', async(req, res, next) => {
 })
 
 routeWhereLoginIsRequired('get','/update_perfil',async (req, res, next) => {
-  const { image,about,username ,level } = (await db.findById(req.session.userID))[0]
+  const { image,about,username ,level } = (await db.findUserById(req.session.userID))[0]
   res.render("update_perfil.html",{ loged:true,image,username,level,about:about.trim() })
 })
 
@@ -148,13 +148,13 @@ routeWhereLoginIsRequired('get','/logout',async (req, res, next) => {
 })
 
 routeWhereLoginIsRequired('get','/change_password',async (req, res, next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   return res.render('change_password.html',{ loged:true,image })
 })
 
 routeWhereLoginIsRequired('post','/change_password',async (req, res, next) => {
   const { old_password,new_password,new_password_again } = req.body;
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   if(new_password.trim() !== new_password_again.trim()){
     return res.render('change_password.html',{ error:"Passwords must be equal" ,loged:true,image})
   } 
@@ -175,12 +175,12 @@ routeWhereLoginIsRequired('post','/change_password',async (req, res, next) => {
 })
 
 routeWhereLoginIsRequired('get','/create_category',async (req, res, next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   return res.render('create_category.html',{ loged:true,image })
 })
 
 routeWhereLoginIsRequired('post','/create_category',async (req, res,next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
 
   try{
     const { name } = req.body
@@ -195,14 +195,26 @@ routeWhereLoginIsRequired('post','/create_category',async (req, res,next) => {
 
 })
 
+routeWhereLoginIsRequired('post','/delete_category/:category_id',async (req, res,next) => {
+  const { category_id } = req.params
+  const category = (await db.findCategoryById(category_id))[0]
+  if(parseInt(category.user_id) === req.session.userID){
+    await db.deleteCategoryById(category_id)
+  }else{
+    req.session.messageOfHomePage = 'You cannot delete this category'
+  }
+
+  return res.redirect('/')
+})
+
 routeWhereLoginIsRequired('get','/create_video', async (req, res,next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   const categories = await db.findAllCategories()
   return res.render('create_video.html',{ loged:true,image,categories })
 })
 
 routeWhereLoginIsRequired('post','/create_video', async (req, res,next) => {
-  const { image } = (await db.findById(req.session.userID))[0]
+  const { image } = (await db.findUserById(req.session.userID))[0]
   const categories = await db.findAllCategories()
   const { name,link,category } = req.body
   try{

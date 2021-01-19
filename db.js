@@ -27,7 +27,7 @@ db.findUserByName = (username) => {
     })
 }
 
-db.findById = (id) => {
+db.findUserById = (id) => {
     return new Promise((resolve,reject) => {
         db.all(`SELECT * FROM USERS WHERE id = ?`,[id],(error,rows) => {
             if(error) {
@@ -124,14 +124,14 @@ db.updateUser = (id,username,image,about) => {
 
 db.testPassword = (id,password) => {
     return new Promise(async(resolve,reject) => {
-        const { hash } = (await db.findById(id))[0]
+        const { hash } = (await db.findUserById(id))[0]
         resolve(bcrypt.compareSync(password, hash))
     })
 }
 
 db.changePassword = (id,old_password,new_password) => {
     return new Promise(async(resolve,reject) => {
-        const { hash } = (await db.findById(id))[0]
+        const { hash } = (await db.findUserById(id))[0]
         if(!bcrypt.compareSync(old_password, hash)) {
             reject('Your password is incorrect')
             throw new Error('Your password is incorrect')
@@ -185,6 +185,29 @@ db.findAllCategories = () => {
     })
 }
 
+db.deleteCategoryById = (id) => {
+    return new Promise((resolve,reject) => {
+        db.run(`DELETE FROM categories WHERE id = ?`,[id],error=>{
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
+    
+            resolve('Sucess')
+        })
+    })
+}
+
+db.findCategoryById = (id) => {
+    return new Promise(async(resolve,reject) => {
+        db.all(`SELECT * FROM categories WHERE id = ?`,[id],(error,rows) => {
+            if(error) reject(error)
+            
+            resolve(rows)
+        })
+    })
+} 
+
 db.createCategory = (userID,name) => {
     return new Promise((resolve,reject) => {
         db.run("INSERT INTO categories (user_id,name) VALUES(?,?) ",
@@ -201,13 +224,13 @@ db.createCategory = (userID,name) => {
 
 db.findVideoByName = (name) => {
     return new Promise((resolve,reject) => {
-        db.run(`DELETE FROM categories WHERE name = ?`,[name],error=>{
+        db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
             if(error) {
                 reject(error)
-                throw new Error(error)
+                throw new Error(error.message)
             }
-    
-            resolve('Sucess')
+            
+            resolve(rows)
         })
     })
 }
@@ -226,23 +249,6 @@ db.createVideo = (name,link,category,user_id,video_src,image_src) => {
     })
 }
 
-db.deleteCategoryByName = (name) => {
-    return new Promise((resolve,reject) => {
-        db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
-            if(error) {
-                reject(error)
-                throw new Error(error.message)
-            }
-            
-            resolve(rows)
-        })
-    })
-}
-
-const debuging = false
-if(debuging){
-    db.deleteAllUsers().then(() => {})
-}
 
 // db.insertData = (data) => {
 //     return new Promise((resolve,reject) => {

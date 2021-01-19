@@ -4,12 +4,39 @@
 {%  block css %}index.css{% endblock %}
 
 {% block content %}
+    <h1 class="title_in_feed">Categories</h1>
     <section id="categories">
         {% for category in categoriesCreatedByUser %}
             <div class="card">
                 {{ category.name }}
+
+                <div class="card--menu">
+                    <form action="/delete_category/{{ category.id }}" method="post">
+                        <button type="submit">
+                            <i class="fas fa-trash-alt icon--trash"></i>
+                        </button>
+                    </a>
+                </div>
             </div>
         {% endfor %}
     </section>
     
+    <script>
+        const categoriesCards = document.querySelectorAll('#categories .card')
+        categoriesCards.forEach(categoryCard => {
+            categoryCard.oncontextmenu = event => {
+                const categoryMenu = categoryCard.querySelector('.card--menu')
+                categoryMenu.classList.toggle('active')
+                categoryMenu.style.left = `${event.layerX}px`
+                categoryMenu.style.top = `${event.layerY}px`
+
+                return false // Prevent normal menu
+            }
+        })
+
+        window.addEventListener('click',() => {
+            const everthingActived = document.querySelectorAll('.active')
+            everthingActived.forEach(div => div.classList.remove('active'))
+        }) 
+    </script>
 {% endblock %}
