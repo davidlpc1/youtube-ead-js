@@ -201,13 +201,13 @@ db.createCategory = (userID,name) => {
 
 db.findVideoByName = (name) => {
     return new Promise((resolve,reject) => {
-        db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
+        db.run(`DELETE FROM categories WHERE name = ?`,[name],error=>{
             if(error) {
                 reject(error)
-                throw new Error(error.message)
+                throw new Error(error)
             }
-            
-            resolve(rows)
+    
+            resolve('Sucess')
         })
     })
 }
@@ -223,6 +223,19 @@ db.createVideo = (name,link,category,user_id,video_src,image_src) => {
 
             resolve('Sucess')
         }) 
+    })
+}
+
+db.delteCategoryByName = (name) => {
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
+            if(error) {
+                reject(error)
+                throw new Error(error.message)
+            }
+            
+            resolve(rows)
+        })
     })
 }
 
