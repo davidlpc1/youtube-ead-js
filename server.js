@@ -6,6 +6,7 @@ const morgan = require('morgan')
 const cookieParser = require('cookie-parser')
 const session = require('express-session')
 const path = require('path')
+const { getImageUrl,getVideoSrc } = require('./youtube')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -192,6 +193,30 @@ routeWhereLoginIsRequired('post','/create_category',async (req, res,next) => {
     return res.render('create_category.html',{ error:err.message ,logged:true,image})
   }
 
+})
+
+routeWhereLoginIsRequired('get','/create_video', async (req, res,next) => {
+  const { image } = (await db.findById(req.session.userID))[0]
+  const categories = await db.findAllCategories()
+  return res.render('create_video.html',{ loged:true,image,categories })
+})
+
+routeWhereLoginIsRequired('post','/create_video', async (req, res,next) => {
+  const { image } = (await db.findById(req.session.userID))[0]
+  const categories = await db.findAllCategories()
+  const { name,link,category } = req.body
+  try{
+    const videoAlreadyExists = await db.findVideoByName(name)
+    if(videoAlreadyExists.length >= 1) return res.render('create_video.html',{ loged:true,image,categories,error:'That video already exists' })
+    const video_src = getVideoSrc(link)
+    const image_src = getImageUrl(link)
+    await db.createVideo(name,link,category,req.session.userID,video_src,image_src)
+    return res.redirect('/')
+  }
+  catch(err){
+    return res.render('create_video.html',{ loged:true,image,categories,error:err.message })
+  }
+  
 })
 
 app.listen(PORT, () => {
