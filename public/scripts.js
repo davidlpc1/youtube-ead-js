@@ -2,7 +2,7 @@ const ulSquares = document.querySelector("ul.squares")
 if(ulSquares){
     const random = (min , max) => Math.random() * (max - min) + min;
 
-    for(let squareIndex = 0; squareIndex <= 15;squareIndex++){
+    for(let squareIndex = 0; squareIndex <= 12;squareIndex++){
         const li = document.createElement("li")
 
         const size = Math.floor(random(10,120));

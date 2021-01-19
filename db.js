@@ -175,6 +175,16 @@ db.findCategoriesByUserId = (userID) => {
     })
 }
 
+db.findAllCategories = () => {
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM categories`,(error,rows) => {
+            if(error) reject(error)
+            
+            resolve(rows)
+        })
+    })
+}
+
 db.createCategory = (userID,name) => {
     return new Promise((resolve,reject) => {
         db.run("INSERT INTO categories (user_id,name) VALUES(?,?) ",
@@ -186,6 +196,33 @@ db.createCategory = (userID,name) => {
 
             resolve('Sucess')
         })      
+    })
+}
+
+db.findVideoByName = (name) => {
+    return new Promise((resolve,reject) => {
+        db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
+            if(error) {
+                reject(error)
+                throw new Error(error.message)
+            }
+            
+            resolve(rows)
+        })
+    })
+}
+
+db.createVideo = (name,link,category,user_id,video_src,image_src) => {
+    return new Promise((resolve,reject) => {
+        db.run("INSERT INTO videos (name,link,category,user_id,video_src,image_src) VALUES(?,?,?,?,?,?)",
+        [name,link,category,user_id,video_src,image_src],(error) => {
+            if(error) {
+                reject(error)
+                throw new Error(error)
+            }
+
+            resolve('Sucess')
+        }) 
     })
 }
 
