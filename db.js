@@ -226,7 +226,7 @@ db.createVideo = (name,link,category,user_id,video_src,image_src) => {
     })
 }
 
-db.delteCategoryByName = (name) => {
+db.deleteCategoryByName = (name) => {
     return new Promise((resolve,reject) => {
         db.all(`SELECT * FROM videos WHERE name = ?`,[name],(error,rows) => {
             if(error) {
