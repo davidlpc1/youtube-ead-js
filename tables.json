@@ -10,7 +10,7 @@
     "CREATE TABLE IF NOT EXISTS 'users' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 'username' TEXT NOT NULL, 'hash' TEXT NOT NULL,'level' NUMERIC NOT NULL DEFAULT 1,'image' varchar(255) NOT NULL,'about' varchar(255) NOT NULL);",     
     "CREATE UNIQUE INDEX 'username' ON 'users' ('username');",
 
-    "CREATE TABLE IF NOT EXISTS 'videos' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'link' varchar(255) NOT NULL,'name' varchar(100) NOT NULL,'category' TEXT NOT NULL,'user_id' TEXT NOT NULL );",
+    "CREATE TABLE IF NOT EXISTS 'videos' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'link' varchar(255) NOT NULL,'name' varchar(100) NOT NULL,category TEXT NOT NULL,'user_id' TEXT NOT NULL,'video_src' TEXT NOT NULL ,'image_src' TEXT NOT NULL);",
     "CREATE UNIQUE INDEX 'video_name' ON 'videos' ('name');",
 
     "CREATE TABLE IF NOT EXISTS 'videos_playlists' ('id' INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,'video_id' TEXT NOT NULL,'playlist_id' TEXT NOT NULL );"
